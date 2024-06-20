@@ -34,6 +34,7 @@
           packages = with pkgs;
             [
               beam.packages.erlang_27.elixir_1_17
+              httpie
             ]
             ++ linuxDeps
             ++ darwinDeps;
@@ -51,6 +52,9 @@
             export ERL_AFLAGS="-kernel shell_history enabled"
 
             export MIX_ENV=dev
+
+            # httpie stuff
+            export HTTPIE_CONFIG_DIR=$PWD/.httpie
           '';
         };
       };

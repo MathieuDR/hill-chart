@@ -13,4 +13,3 @@
   umbrella: false,
   failed: false
 }
-

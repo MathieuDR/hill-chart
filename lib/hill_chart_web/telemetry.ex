@@ -22,12 +22,6 @@ defmodule HillChartWeb.Telemetry do
   def metrics do
     [
       # Phoenix Metrics
-      summary("phoenix.endpoint.start.system_time",
-        unit: {:native, :millisecond}
-      ),
-      summary("phoenix.endpoint.stop.duration",
-        unit: {:native, :millisecond}
-      ),
       summary("phoenix.router_dispatch.start.system_time",
         tags: [:route],
         unit: {:native, :millisecond}
@@ -40,25 +34,11 @@ defmodule HillChartWeb.Telemetry do
         tags: [:route],
         unit: {:native, :millisecond}
       ),
-      summary("phoenix.socket_connected.duration",
-        unit: {:native, :millisecond}
-      ),
-      summary("phoenix.channel_joined.duration",
-        unit: {:native, :millisecond}
-      ),
-      summary("phoenix.channel_handled_in.duration",
-        tags: [:event],
-        unit: {:native, :millisecond}
-      ),
 
       # Database Metrics
       summary("hill_chart.repo.query.total_time",
         unit: {:native, :millisecond},
         description: "The sum of the other measurements"
-      ),
-      summary("hill_chart.repo.query.decode_time",
-        unit: {:native, :millisecond},
-        description: "The time spent decoding the data received from the database"
       ),
       summary("hill_chart.repo.query.query_time",
         unit: {:native, :millisecond},
@@ -67,11 +47,6 @@ defmodule HillChartWeb.Telemetry do
       summary("hill_chart.repo.query.queue_time",
         unit: {:native, :millisecond},
         description: "The time spent waiting for a database connection"
-      ),
-      summary("hill_chart.repo.query.idle_time",
-        unit: {:native, :millisecond},
-        description:
-          "The time the connection spent waiting before being checked out for the query"
       ),
 
       # VM Metrics
