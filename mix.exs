@@ -7,7 +7,7 @@ defmodule HillChart.MixProject do
     [
       app: :hill_chart,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(env),
       start_permanent: env == :prod,
       aliases: aliases(),

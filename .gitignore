@@ -38,3 +38,6 @@ npm-debug.log
 .nix-mix
 .nix-hex
 .direnv
+.envrc_secret
+
+priv/static/
