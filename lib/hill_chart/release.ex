@@ -5,7 +5,7 @@ defmodule HillChart.Release do
   Based on this [blog post from dashbit](https://dashbit.co/blog/automatic-and-manual-ecto-migrations)
   """
 
-  @app :sevenmind
+  @app :hill_chart
 
   @doc """
   Run all pending migrations
