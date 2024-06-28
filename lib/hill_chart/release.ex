@@ -1,4 +1,4 @@
-defmodule Backend.Release do
+defmodule HillChart.Release do
   @moduledoc """
   Helpers for running migrations and rollbacks on the released application
 

@@ -14,7 +14,7 @@ build:
 
 push:
     @echo "Logging in to GitHub Container Registry..."
-    echo ${{GITHUB_PAT}} | docker login ghcr.io -u ${{GITHUB_USERNAME}} --password-stdin
+    echo $GITHUB_PAT | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
 
     @echo "Pushing Docker image to GitHub Container Registry..."
     docker push {{IMAGE_NAME}}:{{TAG}}

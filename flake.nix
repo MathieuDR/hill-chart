@@ -35,6 +35,7 @@
             [
               beam.packages.erlang_27.elixir_1_17
               httpie
+							just
             ]
             ++ linuxDeps
             ++ darwinDeps;

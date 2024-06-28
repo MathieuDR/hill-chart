@@ -79,7 +79,7 @@ RUN mix release
 FROM ${RUNNER_IMAGE}
 
 RUN apk upgrade --no-cache
-RUN apk add --no-cache libstdc++ openssl ncurses-libs
+RUN apk add --no-cache libstdc++ openssl ncurses-libs postgresql-client
 
 # Set the locale
 RUN apk add --no-cache --virtual .build-deps
