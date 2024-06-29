@@ -49,6 +49,7 @@ defmodule HillChart.MixProject do
     [
       {:phoenix, "~> 1.7.12"},
       {:etag_plug, "~> 1.0"},
+      {:cors_plug, "~> 3.0"},
       {:goal, "~> 0.3.1"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},

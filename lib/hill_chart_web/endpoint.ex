@@ -3,6 +3,7 @@ defmodule HillChartWeb.Endpoint do
 
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
+  plug CORSPlug
 
   if code_reloading? do
     plug Phoenix.CodeReloader
