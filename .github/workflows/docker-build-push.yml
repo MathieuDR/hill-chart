@@ -52,3 +52,13 @@ jobs:
         package-name: ${{ env.PACKAGE_NAME }}
         package-type: 'container'
         min-versions-to-keep: 3
+
+    - name: Update VPS
+      uses: appleboy/ssh-action
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        scripts: |
+            deploy ghcr.io/${{ env.IMAGE_NAME }} latest podman-hillchart
+
