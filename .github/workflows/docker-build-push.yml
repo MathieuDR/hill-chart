@@ -3,6 +3,17 @@ name: Build, Push, and Cleanup Docker Images
 on:
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      delete_feature_branch:
+        description: 'Delete feature branch image'
+        required: true
+        type: boolean
+        default: false
+      feature_branch_name:
+        description: 'Feature branch name to delete (if applicable)'
+        required: false
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -65,18 +76,32 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Delete feature branch image
-      if: github.event.pull_request.head.ref != 'main'
+      if: |
+        (github.event_name == 'pull_request' && github.event.pull_request.head.ref != 'main') ||
+        (github.event_name == 'workflow_dispatch' && inputs.delete_feature_branch)
       run: |
         # Comment: This script is configured for a user repository.
         # For a user repository, the API endpoint is: /user/packages/container/{package_name}/versions
         # For an organization repository, it would be: /orgs/{org}/packages/container/{package_name}/versions
 
-        FEATURE_BRANCH="${{ github.event.pull_request.head.ref }}"
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          FEATURE_BRANCH="${{ github.event.pull_request.head.ref }}"
+        else
+          FEATURE_BRANCH="${{ github.event.inputs.feature_branch_name }}"
+        fi
+
+        if [ -z "$FEATURE_BRANCH" ]; then
+          echo "No feature branch specified. Skipping feature branch image deletion."
+          exit 0
+        fi
+
         FEATURE_IMAGE_ID=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions --jq ".[] | select(.metadata.container.tags[] | contains(\"$FEATURE_BRANCH\")) | .id")
         
         if [ ! -z "$FEATURE_IMAGE_ID" ]; then
           echo "Deleting feature branch image for $FEATURE_BRANCH"
           gh api --method DELETE -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions/$FEATURE_IMAGE_ID
+        else
+          echo "No image found for feature branch $FEATURE_BRANCH"
         fi
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
