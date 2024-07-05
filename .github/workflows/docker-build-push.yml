@@ -36,15 +36,15 @@ jobs:
         tags: |
           type=raw,value=latest,enable={{is_default_branch}}
 
-    # - name: Build and push Docker image
-    #   uses: docker/build-push-action@v6
-    #   with:
-    #     context: .
-    #     push: true
-    #     tags: ${{ steps.meta.outputs.tags }}
-    #     labels: ${{ steps.meta.outputs.labels }}
-    #     build-args: |
-    #       APP_VERSION=${{ github.sha }}
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          APP_VERSION=${{ github.sha }}
 
     - name: Delete old images
       uses: actions/delete-package-versions@v5
