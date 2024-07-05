@@ -45,6 +45,8 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
@@ -63,7 +65,11 @@ jobs:
         # For an organization repository, it would be: /orgs/{org}/packages/container/{package_name}/versions
 
         # Get all versions tagged with 'main'
-        MAIN_VERSIONS=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions --paginate | jq -r '.[] | select(.metadata.container.tags[] | contains("main")) | [.id, .created_at] | @tsv')
+        gh auth status
+        echo "----"
+        echo $(gh auth status)
+        echo "----"
+        MAIN_VERSIONS=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions | jq -r '.[] | select(.metadata.container.tags[] | contains("main")) | [.id, .created_at] | @tsv')
         
         # Sort versions by creation date and keep only the last 5
         VERSIONS_TO_KEEP=$(echo "$MAIN_VERSIONS" | sort -k2 -r | head -n 5 | cut -f1)
