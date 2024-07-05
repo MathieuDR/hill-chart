@@ -60,5 +60,5 @@ jobs:
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
-            deploy ghcr.io/${{ env.IMAGE_NAME }} latest podman-hillchart
+            deploy_image ghcr.io/${{ env.IMAGE_NAME }} latest podman-hillchart
 
