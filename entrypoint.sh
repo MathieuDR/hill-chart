@@ -21,3 +21,6 @@ bin/hill_chart eval "HillChart.Release.migrate"
 # Start the Phoenix server
 echo "Starting Phoenix server..."
 exec bin/hill_chart start
+
+#TODO: Use init service vs exec
+# TinyD
