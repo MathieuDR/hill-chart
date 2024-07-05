@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  PACKAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
   build-push-and-cleanup:
@@ -15,9 +16,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      actions: read
-      attestations: write
-      id-token: write
 
     steps:
     - name: Checkout repository
@@ -51,6 +49,6 @@ jobs:
     - name: Delete old images
       uses: actions/delete-package-versions@v5
       with:
-        package-name: 'hill-chart'
+        package-name: ${{ env.PACKAGE_NAME }}
         package-type: 'container'
         min-versions-to-keep: 3
