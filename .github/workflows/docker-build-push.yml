@@ -57,7 +57,7 @@ jobs:
       uses: appleboy/ssh-action
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
+        username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_KEY }}
         scripts: |
             deploy ghcr.io/${{ env.IMAGE_NAME }} latest podman-hillchart
