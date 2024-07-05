@@ -1,0 +1,82 @@
+name: Build, Push, and Cleanup Docker Images
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-push-and-cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          APP_VERSION=${{ github.sha }}
+
+    - name: Delete old 'main' images
+      run: |
+        # Comment: This script is configured for a user repository.
+        # For a user repository, the API endpoint is: /user/packages/container/{package_name}/versions
+        # For an organization repository, it would be: /orgs/{org}/packages/container/{package_name}/versions
+
+        # Get all versions tagged with 'main'
+        MAIN_VERSIONS=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions --paginate | jq -r '.[] | select(.metadata.container.tags[] | contains("main")) | [.id, .created_at] | @tsv')
+        
+        # Sort versions by creation date and keep only the last 5
+        VERSIONS_TO_KEEP=$(echo "$MAIN_VERSIONS" | sort -k2 -r | head -n 5 | cut -f1)
+        
+        # Delete older versions
+        echo "$MAIN_VERSIONS" | while read version_id created_at; do
+          if ! echo "$VERSIONS_TO_KEEP" | grep -q "$version_id"; then
+            echo "Deleting old 'main' version $version_id created at $created_at"
+            gh api --method DELETE -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions/$version_id
+          fi
+        done
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Delete feature branch image
+      if: github.event.pull_request.head.ref != 'main'
+      run: |
+        # Comment: This script is configured for a user repository.
+        # For a user repository, the API endpoint is: /user/packages/container/{package_name}/versions
+        # For an organization repository, it would be: /orgs/{org}/packages/container/{package_name}/versions
+
+        FEATURE_BRANCH="${{ github.event.pull_request.head.ref }}"
+        FEATURE_IMAGE_ID=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions --jq ".[] | select(.metadata.container.tags[] | contains(\"$FEATURE_BRANCH\")) | .id")
+        
+        if [ ! -z "$FEATURE_IMAGE_ID" ]; then
+          echo "Deleting feature branch image for $FEATURE_BRANCH"
+          gh api --method DELETE -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions/$FEATURE_IMAGE_ID
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
