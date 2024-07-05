@@ -54,7 +54,7 @@ jobs:
         min-versions-to-keep: 3
 
     - name: Update VPS
-      uses: appleboy/ssh-action
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.VPS_USERNAME }}
