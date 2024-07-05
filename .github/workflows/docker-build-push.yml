@@ -48,7 +48,7 @@ jobs:
         build-args: |
           APP_VERSION=${{ github.sha }}
 
-    - name: Delete old 'main' images
+    - name: Delete old images
       uses: actions/delete-package-versions@v5
       with:
         owner: 'MathieuDR'
