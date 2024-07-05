@@ -4,16 +4,6 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      delete_feature_branch:
-        description: 'Delete feature branch image'
-        required: true
-        type: boolean
-        default: false
-      feature_branch_name:
-        description: 'Feature branch name to delete (if applicable)'
-        required: false
-        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -59,59 +49,8 @@ jobs:
           APP_VERSION=${{ github.sha }}
 
     - name: Delete old 'main' images
-      run: |
-        # Comment: This script is configured for a user repository.
-        # For a user repository, the API endpoint is: /user/packages/container/{package_name}/versions
-        # For an organization repository, it would be: /orgs/{org}/packages/container/{package_name}/versions
-
-        # Get all versions tagged with 'main'
-        gh auth status
-        echo "----"
-        echo $(gh api -H "Accept: application/vnd.github+json" /user/packages?package_type=container)
-        echo "----"
-        echo "----"
-        MAIN_VERSIONS=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions | jq -r '.[] | select(.metadata.container.tags[] | contains("main")) | [.id, .created_at] | @tsv')
-        
-        # Sort versions by creation date and keep only the last 5
-        VERSIONS_TO_KEEP=$(echo "$MAIN_VERSIONS" | sort -k2 -r | head -n 5 | cut -f1)
-        
-        # Delete older versions
-        echo "$MAIN_VERSIONS" | while read version_id created_at; do
-          if ! echo "$VERSIONS_TO_KEEP" | grep -q "$version_id"; then
-            echo "Deleting old 'main' version $version_id created at $created_at"
-            gh api --method DELETE -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions/$version_id
-          fi
-        done
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Delete feature branch image
-      if: |
-        (github.event_name == 'pull_request' && github.event.pull_request.head.ref != 'main') ||
-        (github.event_name == 'workflow_dispatch' && inputs.delete_feature_branch)
-      run: |
-        # Comment: This script is configured for a user repository.
-        # For a user repository, the API endpoint is: /user/packages/container/{package_name}/versions
-        # For an organization repository, it would be: /orgs/{org}/packages/container/{package_name}/versions
-
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
-          FEATURE_BRANCH="${{ github.event.pull_request.head.ref }}"
-        else
-          FEATURE_BRANCH="${{ github.event.inputs.feature_branch_name }}"
-        fi
-
-        if [ -z "$FEATURE_BRANCH" ]; then
-          echo "No feature branch specified. Skipping feature branch image deletion."
-          exit 0
-        fi
-
-        FEATURE_IMAGE_ID=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions --jq ".[] | select(.metadata.container.tags[] | contains(\"$FEATURE_BRANCH\")) | .id")
-        
-        if [ ! -z "$FEATURE_IMAGE_ID" ]; then
-          echo "Deleting feature branch image for $FEATURE_BRANCH"
-          gh api --method DELETE -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions/$FEATURE_IMAGE_ID
-        else
-          echo "No image found for feature branch $FEATURE_BRANCH"
-        fi
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/delete-package-versions@v5
+      with:
+        owner: 'MathieuDR'
+        package-name: ${{ env.IMAGE_NAME }}
+        min-versions-to_keep: 3
