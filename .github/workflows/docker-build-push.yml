@@ -67,7 +67,8 @@ jobs:
         # Get all versions tagged with 'main'
         gh auth status
         echo "----"
-        echo $(gh auth status)
+        echo $(gh api -H "Accept: application/vnd.github+json" /user/packages?package_type=container)
+        echo "----"
         echo "----"
         MAIN_VERSIONS=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/${{ env.IMAGE_NAME }}/versions | jq -r '.[] | select(.metadata.container.tags[] | contains("main")) | [.id, .created_at] | @tsv')
         
