@@ -15,13 +15,16 @@ defmodule HillChartWeb.Tracked.TicketJSON do
     %{data: data(ticket)}
   end
 
-  defp data(%Ticket{} = ticket) do
+  defp data(%Ticket{} = ticket), do: render_ticket(ticket)
+
+  def render_ticket(%Ticket{} = ticket) do
     %{
       id: ticket.id,
       label: ticket.label,
       url: ticket.url,
       colour: ticket.colour,
-      completion: ticket.completion
+      completion: ticket.completion,
+      project_id: ticket.project_id
     }
   end
 end

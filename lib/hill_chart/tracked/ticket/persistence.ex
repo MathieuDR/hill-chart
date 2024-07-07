@@ -104,4 +104,28 @@ defmodule HillChart.Tracked.Ticket.Persistence do
   def change_ticket(%Ticket{} = ticket, attrs \\ %{}) do
     Ticket.changeset(ticket, attrs)
   end
+
+  @doc """
+  Deletes all ticket
+
+  ## Examples
+    iex> delete_all()
+    {1, nil}
+  """
+  def delete_all() do
+    Repo.delete_all(Ticket)
+  end
+
+  @doc """
+  Deletes all tickets with the given id
+
+  ## Examples
+    iex> delete_all([id1, id2])
+    {2, nil}
+  """
+  def delete_all(ids) do
+    Ticket
+    |> where([p], p.id in ^ids)
+    |> Repo.delete_all()
+  end
 end

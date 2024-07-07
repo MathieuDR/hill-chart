@@ -22,7 +22,7 @@ config :hill_chart, HillChartWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
-  debug_errors: false,
+  debug_errors: true,
   secret_key_base: "9/Mqkm8wllY3IVVxbjTj2zJ2kYznQ0q9Dg3uW8wtxEVjOad7/wbNh/jEuTD5VC8+",
   watchers: []
 

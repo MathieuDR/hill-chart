@@ -21,4 +21,20 @@ defmodule HillChart.TrackedFixtures do
 
     ticket
   end
+
+  @doc """
+  Generate a project.
+  """
+  def project_fixture(attrs \\ %{}) do
+    {:ok, project} =
+      attrs
+      |> Enum.into(%{
+        description: "some description",
+        freeform: "some freeform",
+        name: "some name"
+      })
+      |> HillChart.Tracked.create_project()
+
+    project
+  end
 end
