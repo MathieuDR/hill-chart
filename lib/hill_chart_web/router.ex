@@ -12,6 +12,7 @@ defmodule HillChartWeb.Router do
 
     scope "/tracked" do
       resources "/tickets", Tracked.TicketController
+      resources "/projects", Tracked.ProjectController
     end
   end
 end

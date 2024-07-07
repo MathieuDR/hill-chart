@@ -19,3 +19,8 @@ push:
     @echo "Pushing Docker image to GitHub Container Registry..."
     docker push {{IMAGE_NAME}}:{{TAG}}
 
+	
+server:
+	docker compose up -d
+	MIX_ENV=dev;mix ecto.init
+	MIX_ENV=dev;mix phx.server
