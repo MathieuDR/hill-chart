@@ -1,10 +1,10 @@
-defmodule HillChartWeb.Tracked.TicketController do
-  use HillChartWeb, :controller
+defmodule HillChart.Web.Tracked.TicketController do
+  use HillChart.Web, :controller
 
   alias HillChart.Tracked.Ticket.Persistence
   alias HillChart.Tracked.Ticket.Persistence.Schema, as: Ticket
 
-  action_fallback(HillChartWeb.FallbackController)
+  action_fallback(HillChart.Web.FallbackController)
 
   def index(conn, _params) do
     tickets = Persistence.list_tickets()

@@ -1,10 +1,10 @@
-defmodule HillChartWeb.Tracked.ProjectController do
-  use HillChartWeb, :controller
+defmodule HillChart.Web.Tracked.ProjectController do
+  use HillChart.Web, :controller
 
   alias HillChart.Tracked.Project.Persistence
   alias HillChart.Tracked.Project.Persistence.Schema, as: Project
 
-  action_fallback HillChartWeb.FallbackController
+  action_fallback HillChart.Web.FallbackController
 
   def index(conn, _params) do
     projects = Persistence.list_projects()

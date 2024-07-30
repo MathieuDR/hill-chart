@@ -1,8 +1,12 @@
 defmodule HillChart.Tracked.Project.Persistence.Schema do
+  @moduledoc false
   use TypedEctoSchema
+
   import Ecto.Changeset
 
   alias HillChart.Tracked.Ticket.Persistence.Schema, as: Ticket
+
+  # TODO: Set min and max length on properties
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @timestamps_opts [type: :utc_datetime]

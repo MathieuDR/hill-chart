@@ -1,4 +1,4 @@
-defmodule HillChartWeb.Telemetry do
+defmodule HillChart.Web.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -61,7 +61,7 @@ defmodule HillChartWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {HillChartWeb, :count_users, []}
+      # {HillChart.Web, :count_users, []}
     ]
   end
 end

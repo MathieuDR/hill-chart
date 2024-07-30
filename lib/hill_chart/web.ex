@@ -1,12 +1,12 @@
-defmodule HillChartWeb do
+defmodule HillChart.Web do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use HillChartWeb, :controller
-      use HillChartWeb, :html
+      use HillChart.Web, :controller
+      use HillChart.Web, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -37,10 +37,10 @@ defmodule HillChartWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: HillChartWeb.Layouts]
+        layouts: [html: HillChart.Web.Layouts]
 
       import Plug.Conn
-      import HillChartWeb.Gettext
+      import HillChart.Web.Gettext
 
       unquote(verified_routes())
     end
@@ -49,8 +49,8 @@ defmodule HillChartWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: HillChartWeb.Endpoint,
-        router: HillChartWeb.Router
+        endpoint: HillChart.Web.Endpoint,
+        router: HillChart.Web.Router
     end
   end
 

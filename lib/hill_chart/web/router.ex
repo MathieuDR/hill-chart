@@ -1,5 +1,5 @@
-defmodule HillChartWeb.Router do
-  use HillChartWeb, :router
+defmodule HillChart.Web.Router do
+  use HillChart.Web, :router
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -7,7 +7,7 @@ defmodule HillChartWeb.Router do
     plug CORSPlug, origin: ["*"], max_age: 86400
   end
 
-  scope "/", HillChartWeb do
+  scope "/", HillChart.Web do
     pipe_through :api
 
     scope "/tracked" do

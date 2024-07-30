@@ -8,10 +8,10 @@ defmodule HillChart.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      HillChartWeb.Telemetry,
+      HillChart.Web.Telemetry,
       HillChart.Repo,
       {Phoenix.PubSub, name: HillChart.PubSub},
-      HillChartWeb.Endpoint
+      HillChart.Web.Endpoint
     ]
 
     opts = [strategy: :one_for_one, name: HillChart.Supervisor]
@@ -22,7 +22,7 @@ defmodule HillChart.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    HillChartWeb.Endpoint.config_change(changed, removed)
+    HillChart.Web.Endpoint.config_change(changed, removed)
     :ok
   end
 end

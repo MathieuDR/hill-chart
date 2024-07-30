@@ -1,4 +1,4 @@
-defmodule HillChartWeb.ChangesetJSON do
+defmodule HillChart.Web.ChangesetJSON do
   @doc """
   Renders changeset errors.
   """
@@ -13,9 +13,9 @@ defmodule HillChartWeb.ChangesetJSON do
     # uncommenting and adjusting the following code:
 
     # if count = opts[:count] do
-    #   Gettext.dngettext(HillChartWeb.Gettext, "errors", msg, msg, count, opts)
+    #   Gettext.dngettext(HillChart.Web.Gettext, "errors", msg, msg, count, opts)
     # else
-    #   Gettext.dgettext(HillChartWeb.Gettext, "errors", msg, opts)
+    #   Gettext.dgettext(HillChart.Web.Gettext, "errors", msg, opts)
     # end
 
     Enum.reduce(opts, msg, fn {key, value}, acc ->

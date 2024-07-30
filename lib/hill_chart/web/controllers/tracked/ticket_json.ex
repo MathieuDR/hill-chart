@@ -1,4 +1,4 @@
-defmodule HillChartWeb.Tracked.TicketJSON do
+defmodule HillChart.Web.Tracked.TicketJSON do
   alias HillChart.Tracked.Ticket.Persistence.Schema, as: Ticket
 
   @doc """

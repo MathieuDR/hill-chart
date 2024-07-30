@@ -1,4 +1,4 @@
-defmodule HillChartWeb.Tracked.ProjectJSON do
+defmodule HillChart.Web.Tracked.ProjectJSON do
   alias HillChart.Tracked.Project.Persistence.Schema, as: Project
 
   @doc """
@@ -28,5 +28,5 @@ defmodule HillChartWeb.Tracked.ProjectJSON do
   defp maybe_load_tickets(%Ecto.Association.NotLoaded{}), do: :not_loaded
 
   defp maybe_load_tickets(tickets) when is_list(tickets),
-    do: Enum.map(tickets, &HillChartWeb.Tracked.TicketJSON.render_ticket/1)
+    do: Enum.map(tickets, &HillChart.Web.Tracked.TicketJSON.render_ticket/1)
 end

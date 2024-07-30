@@ -32,7 +32,7 @@ defmodule HillChart.MixProject do
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
-  defp deps() do
+  defp deps do
     Enum.concat([
       deps_for(:api_building),
       deps_for(:persistence),
@@ -53,7 +53,8 @@ defmodule HillChart.MixProject do
       {:goal, "~> 0.3.1"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:chameleon, "~> 2.5"}
     ]
   end
 
@@ -76,6 +77,7 @@ defmodule HillChart.MixProject do
 
   defp deps_for(:linting) do
     [
+      {:styler, "~> 0.11", only: [:test, :dev], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.16.0", only: [:test, :dev], runtime: false},
       {:credo, ">= 0.0.0", only: [:test, :dev], runtime: false},
@@ -87,6 +89,7 @@ defmodule HillChart.MixProject do
   defp deps_for(:testing) do
     [
       {:excoveralls, "~> 0.5", only: :test},
+      {:stream_data, "~> 1.1"},
       {:mox, "~> 1.1", only: :test}
     ]
   end

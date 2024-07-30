@@ -12,11 +12,11 @@ config :hill_chart,
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
-config :hill_chart, HillChartWeb.Endpoint,
+config :hill_chart, HillChart.Web.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [json: HillChartWeb.ErrorJSON],
+    formats: [json: HillChart.Web.ErrorJSON],
     accepts: :json,
     layout: false
   ],

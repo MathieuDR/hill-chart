@@ -1,4 +1,4 @@
-defmodule HillChartWeb.Endpoint do
+defmodule HillChart.Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :hill_chart
 
   plug Plug.RequestId
@@ -16,5 +16,5 @@ defmodule HillChartWeb.Endpoint do
 
   plug Plug.MethodOverride
   plug Plug.Head
-  plug HillChartWeb.Router
+  plug HillChart.Web.Router
 end
